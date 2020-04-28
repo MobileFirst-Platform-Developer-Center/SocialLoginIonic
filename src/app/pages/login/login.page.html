@@ -1,0 +1,56 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Login Gateway</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="mobilefirst-logo">
+    <img src="assets/images/mobilefirst.svg" alt="MFP Logo">
+  </div>
+<div *ngIf="normalLogin == true">
+  <form #loginForm="ngForm" novalidate>
+    <ion-list lines="none">
+      <ion-item>
+        <ion-label position="stacked" color="primary">Username</ion-label>
+        <ion-input [(ngModel)]="creds.username" name="username" type="text" #username="ngModel" required>
+        </ion-input>
+      </ion-item>
+      <ion-text color="danger">
+        <p [hidden]="username.valid || submitted == false" class="ion-padding-start">
+          Username is required
+        </p>
+      </ion-text>
+
+      <ion-item>
+        <ion-label position="stacked" color="primary">Password</ion-label>
+        <ion-input [(ngModel)]="creds.password" name="password" type="password" #password="ngModel" required>
+        </ion-input>
+      </ion-item>
+      <ion-text color="danger">
+        <p [hidden]="password.valid || submitted == false" class="ion-padding-start">
+          Password is required
+        </p>
+      </ion-text>
+    </ion-list>
+
+    <div class="ion-padding">
+      <ion-button (click)="login(loginForm)" type="submit" expand="block">Login</ion-button>
+    </div>
+  </form>
+</div>
+<div *ngIf="normalLogin == false">
+  <br/><br/><br/>
+  <div class="ion-padding">
+    <ion-button (click)="login(loginForm)" type="submit" expand="block">Login with Facebook</ion-button>
+  </div>
+  <div class="ion-padding">
+    <ion-button (click)="login(loginForm)" type="submit" expand="block">Login with Google</ion-button>
+  </div>
+  <div class="ion-padding">
+    <ion-button (click)="enableSignInwithLoginCredentials()" type="submit" expand="block">Login with User Credentials</ion-button>
+  </div>
+</div>
+  
+
+</ion-content>
