@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.mfp.sociallogin" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:mfp="http://www.ibm.com/mobilefirst/cordova-plugin-mfp">
-    <name>SocialLogin</name>
+    <name>MFPSocialLogin</name>
     <description>Ionic 5.x Sample for Social Login Authentication using MobileFirst Platform Foundation</description>
     <author email="vittalpai@in.ibm.com" href="http://ibm.com/">Vittal R Pai</author>
     <content src="index.html" />

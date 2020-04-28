@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Subject} from 'rxjs';
 import {MFPUser} from '../models/mfpuser.model';
+import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook/ngx';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +11,10 @@ export class AuthenticationService {
   private userLoginChallengeHandler: WL.Client.SecurityCheckChallengeHandler;
   private userLoginSecurityCheck: string = "UserLogin";
   private challenge = new Subject<any>();
+
+  constructor(private fb: Facebook) { 
+    
+  }
 
   publishChallenge(data: any) {
       this.challenge.next(data);
@@ -84,5 +89,31 @@ export class AuthenticationService {
       'message' : msg,
       'challengeHandler' : this.userLoginChallengeHandler
     });
+  }
+
+  fbLogin() {
+    const promise = new Promise((resolve, reject) => {
+      this.fb.login(['public_profile', 'user_friends', 'email'])
+      .then(res => {
+        if (res.status === 'connected') {
+          console.log("FB SUCCESS" + JSON.stringify(res))
+          resolve(res);
+        } else {
+          reject(res);
+        }
+      })
+      .catch(e => reject(e));
+    });
+    return promise;
+  }
+
+
+  fbLogout() {
+    const promise = new Promise((resolve, reject) => {
+    this.fb.logout()
+      .then( res => resolve(res))
+      .catch(e => reject(e));
+    });
+    return promise;
   }
 }

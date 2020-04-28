@@ -63,6 +63,18 @@ export class LoginPage {
     }
   }
 
+  fbLogin() {
+    this.authenticationService.fbLogin().then((response: any) => {
+      this.router.navigate(['/home']);
+    }).catch((error) => {
+       this.utils.showAlert('Error!', 'Error while authenticating the user');
+    })
+  }
+
+  googleLogin() {
+    
+  }
+
  enableSignInwithLoginCredentials() {
    this.normalLogin = true;
  }

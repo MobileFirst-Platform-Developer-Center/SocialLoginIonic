@@ -10,6 +10,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AuthenticationService } from 'src/app/services/authentication.service'
 import { UtilsService } from 'src/app/services/utils.service'
+import { Facebook } from '@ionic-native/facebook/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -20,7 +21,8 @@ import { UtilsService } from 'src/app/services/utils.service'
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     AuthenticationService,
-    UtilsService
+    UtilsService,
+    Facebook
   ],
   bootstrap: [AppComponent]
 })
