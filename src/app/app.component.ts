@@ -5,7 +5,6 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/authentication.service'
-import { MFPUser } from './models/mfpuser.model';
 
 @Component({
   selector: 'app-root',

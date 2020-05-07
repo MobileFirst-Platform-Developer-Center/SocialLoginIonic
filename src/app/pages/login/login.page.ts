@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router'
 import { UtilsService } from 'src/app/services/utils.service';
 import { AuthenticationService } from 'src/app/services/authentication.service'
-import { MFPUser } from 'src/app/models/mfpuser.model';
+import { Vendor } from 'src/app/models/vendor';
 import { NgForm } from '@angular/forms';
 
 export interface UserOptions {
@@ -20,14 +20,13 @@ export class LoginPage {
   creds: UserOptions = { username: '', password: '' };
   submitted = false;
   normalLogin = false;
-  mfpUser: MFPUser = new MFPUser();
-  private userLoginChallengeHandler: WL.Client.SecurityCheckChallengeHandler;
+  private socialLoginChallengeHandler: WL.Client.SecurityCheckChallengeHandler;
   private isChallenged = false;
 
   constructor(private utils: UtilsService, private authenticationService: AuthenticationService, private router: Router) {
     this.authenticationService.getObservable().subscribe((data) => {
       this.isChallenged = true;
-      this.userLoginChallengeHandler = data.challengeHandler;
+      this.socialLoginChallengeHandler = data.challengeHandler;
       this.utils.showAlert('Error!', 'Error while authenticating the user. ' + data.message);
     });
   }
@@ -36,7 +35,7 @@ export class LoginPage {
     this.submitted = true;
     if (form.valid && !this.isChallenged) {
       console.log('-->  login(): First time login attempt');
-      const promise = this.authenticationService.login(this.creds.username, this.creds.password, this.mfpUser.isEnrolled);
+      const promise = this.authenticationService.login(this.creds.username, this.creds.password, false);
       promise.then((response: any) => {
         this.creds.password = "";
         if (response.status !== undefined && response.status === 'success') {
@@ -55,7 +54,7 @@ export class LoginPage {
       });
     } else if (this.isChallenged) {
       console.log('-->  login(): Subsequent login attempt');
-      this.userLoginChallengeHandler.submitChallengeAnswer({
+      this.socialLoginChallengeHandler.submitChallengeAnswer({
         username: this.creds.username,
         password: this.creds.password
       });
@@ -65,7 +64,7 @@ export class LoginPage {
 
   fbLogin() {
     this.authenticationService.fbLogin().then((response: any) => {
-      this.router.navigate(['/home']);
+      this.loginToSocialVendor(Vendor.Facebook, response.authResponse.accessToken)
     }).catch((error) => {
        this.utils.showAlert('Error!', 'Error while authenticating the user');
     })
@@ -73,6 +72,32 @@ export class LoginPage {
 
   googleLogin() {
     
+  }
+
+  loginToSocialVendor(vendor, token) {
+    var credentials = {
+      token : token,
+      vendor : vendor
+    }
+    if(this.isChallenged) {
+      this.socialLoginChallengeHandler.submitChallengeAnswer(credentials);
+    } else {
+      const promise = this.authenticationService.socialLogin(credentials);
+      promise.then((response: any) => {
+        if (response.status !== undefined && response.status === 'success') {
+          this.router.navigate(['/home']);
+          this.normalLogin = false;
+        } else {
+          this.utils.showAlert('Error!', 'Error while authenticating the user');
+        }
+      }).catch((error) => {
+        if (error.status !== undefined && error.status === 'error') {
+          this.utils.showAlert('Error!', error.message);
+        } else {
+          this.utils.showAlert('Error!', 'Error while authenticating the user');
+        }
+      });
+    }
   }
 
  enableSignInwithLoginCredentials() {

@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { LoadingController, AlertController } from '@ionic/angular';
-import { MFPUser } from '../models/mfpuser.model';
 
 @Injectable({
   providedIn: 'root'

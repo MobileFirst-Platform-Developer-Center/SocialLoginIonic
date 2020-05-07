@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import {Subject} from 'rxjs';
-import {MFPUser} from '../models/mfpuser.model';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook/ngx';
 
 @Injectable({
@@ -8,8 +7,8 @@ import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook/ngx';
 })
 export class AuthenticationService {
 
-  private userLoginChallengeHandler: WL.Client.SecurityCheckChallengeHandler;
-  private userLoginSecurityCheck: string = "UserLogin";
+  private socialLoginChallengeHandler: WL.Client.SecurityCheckChallengeHandler;
+  private socialLoginSecurityCheck: string = "socialLogin";
   private challenge = new Subject<any>();
 
   constructor(private fb: Facebook) { 
@@ -24,20 +23,29 @@ export class AuthenticationService {
       return this.challenge;
   }
 
+  socialLogin(credentials) {
+    const promise = new Promise((resolve, reject) => {
+      WLAuthorizationManager.login(this.socialLoginSecurityCheck, credentials).then(success => {
+        console.log("-->AuthenticationService : MFPSocialLogin : login() : success : " + JSON.stringify(success));
+        resolve({ status: 'success', message: 'User credentials are valid' });
+      }, error => {
+        console.log("-->AuthenticationService : MFPSocialLogin : login() : error : " + JSON.stringify(error));
+        reject({ status: 'error', message: 'Invalid user credentials' });
+      });
+    });
+    return promise;
+  }
+
   login(userId: string, password: string, isEnrolled: boolean) {
     const promise = new Promise((resolve, reject) => {
-      WLAuthorizationManager.login(this.userLoginSecurityCheck, {
+      WLAuthorizationManager.login(this.socialLoginSecurityCheck, {
         username: userId,
         password: password
       }).then(success => {
-        console.log("-->AuthenticationService : MFPUserLogin : login() : success : " + JSON.stringify(success));
-        let user = new MFPUser();
-        user.isEnrolled = isEnrolled;
-        user.userName = userId;
-        user.secretToken = password;
+        console.log("-->AuthenticationService : MFPSocialLogin : login() : success : " + JSON.stringify(success));
         resolve({ status: 'success', message: 'User credentials are valid' });
       }, error => {
-        console.log("-->AuthenticationService : MFPUserLogin : login() : error : " + JSON.stringify(error));
+        console.log("-->AuthenticationService : MFPSocialLogin : login() : error : " + JSON.stringify(error));
         reject({ status: 'error', message: 'Invalid user credentials' });
       });
     });
@@ -46,13 +54,13 @@ export class AuthenticationService {
 
   logout() {
     const promise = new Promise((resolve, reject) => {
-      WLAuthorizationManager.logout(this.userLoginSecurityCheck).then(
+      WLAuthorizationManager.logout(this.socialLoginSecurityCheck).then(
         function () {
-          WL.Logger.debug("Successfully logged-out from  " + this.userLoginSecurityCheck);
+          WL.Logger.debug("Successfully logged-out from  " + this.socialLoginSecurityCheck);
           resolve({ status: 'success', message: 'Logged out successfully' });
         },
         function (response) {
-          WL.Logger.debug(this.userLoginSecurityCheck + " logout failed: " + JSON.stringify(response));
+          WL.Logger.debug(this.socialLoginSecurityCheck + " logout failed: " + JSON.stringify(response));
           reject({ status: 'error', message: 'Failed to logout' });
         }
       );
@@ -61,19 +69,19 @@ export class AuthenticationService {
   }
 
   registerChallengeHandlers() {
-    this.registerUserLoginChallengeHandler();
+    this.registersocialLoginChallengeHandler();
   }
 
-  registerUserLoginChallengeHandler() {
-    this.userLoginChallengeHandler = WL.Client.createSecurityCheckChallengeHandler(this.userLoginSecurityCheck);
-    this.userLoginChallengeHandler.handleChallenge = (challenge) => {
+  registersocialLoginChallengeHandler() {
+    this.socialLoginChallengeHandler = WL.Client.createSecurityCheckChallengeHandler(this.socialLoginSecurityCheck);
+    this.socialLoginChallengeHandler.handleChallenge = (challenge) => {
       this.displayLoginChallenge(challenge);
     }
-    this.userLoginChallengeHandler.handleSuccess = (success) => {
-      console.log("-->AuthenticationService : MFPUserLogin : handleSuccess() : success : " + JSON.stringify(success));
+    this.socialLoginChallengeHandler.handleSuccess = (success) => {
+      console.log("-->AuthenticationService : MFPSocialLogin : handleSuccess() : success : " + JSON.stringify(success));
     }
-    this.userLoginChallengeHandler.handleFailure = (error) => {
-      console.log("-->AuthenticationService : MFPUserLogin : handleFailure() : error : " + JSON.stringify(error));
+    this.socialLoginChallengeHandler.handleFailure = (error) => {
+      console.log("-->AuthenticationService : MFPSocialLogin : handleFailure() : error : " + JSON.stringify(error));
     }
   }
 
@@ -87,7 +95,7 @@ export class AuthenticationService {
     }
     this.publishChallenge({
       'message' : msg,
-      'challengeHandler' : this.userLoginChallengeHandler
+      'challengeHandler' : this.socialLoginChallengeHandler
     });
   }
 
