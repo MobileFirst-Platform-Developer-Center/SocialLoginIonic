@@ -11,6 +11,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AuthenticationService } from 'src/app/services/authentication.service'
 import { UtilsService } from 'src/app/services/utils.service'
 import { Facebook } from '@ionic-native/facebook/ngx';
+import { GooglePlus } from '@ionic-native/google-plus/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -22,7 +23,8 @@ import { Facebook } from '@ionic-native/facebook/ngx';
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     AuthenticationService,
     UtilsService,
-    Facebook
+    Facebook,
+    GooglePlus
   ],
   bootstrap: [AppComponent]
 })

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Subject} from 'rxjs';
-import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook/ngx';
+import { Facebook } from '@ionic-native/facebook/ngx';
+import {GooglePlus} from '@ionic-native/google-plus/ngx';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class AuthenticationService {
   private socialLoginSecurityCheck: string = "socialLogin";
   private challenge = new Subject<any>();
 
-  constructor(private fb: Facebook) { 
+  constructor(private fb: Facebook, private google: GooglePlus) { 
     
   }
 
@@ -104,7 +105,7 @@ export class AuthenticationService {
       this.fb.login(['public_profile', 'user_friends', 'email'])
       .then(res => {
         if (res.status === 'connected') {
-          console.log("FB SUCCESS" + JSON.stringify(res))
+          console.log("Facebook Login SUCCESS" + JSON.stringify(res))
           resolve(res);
         } else {
           reject(res);
@@ -121,6 +122,18 @@ export class AuthenticationService {
     this.fb.logout()
       .then( res => resolve(res))
       .catch(e => reject(e));
+    });
+    return promise;
+  }
+
+  googleLogin() {
+    const promise = new Promise((resolve, reject) => {
+      this.google.login({}).then(res => {
+          console.log("Google Login SUCCESS" + JSON.stringify(res));
+          resolve(res);
+        }, err => {
+          reject(err);
+        });
     });
     return promise;
   }

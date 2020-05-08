@@ -70,8 +70,14 @@ export class LoginPage {
     })
   }
 
+  
+
   googleLogin() {
-    
+    this.authenticationService.googleLogin().then((response: any) => {
+     this.loginToSocialVendor(Vendor.Google, response.idToken)
+    }).catch((error) => {
+       this.utils.showAlert('Error!', 'Error while authenticating the user');
+    })
   }
 
   loginToSocialVendor(vendor, token) {
