@@ -21,14 +21,11 @@ https://mobilefirstplatform.ibmcloud.com/blog/2016/04/06/social-login-with-ibm-m
 
 ##### Facebook Authentication
 
-
-    * Register android and iOS application with the id `com.mfp.sociallogin` by following steps as mentioned [here-().
+- Register android and iOS application with the id `com.mfp.sociallogin` by following steps as mentioned [here]().
     * Copy Facebook App ID  & App Name from [Facebook Apps Console](https://developers.facebook.com/apps/)
-
     * ![Facebook APP ID](mobilefirst/facebook.png)
 
-    * Edit the file **package.json**, there you need supply the following:
-
+- Edit the file **package.json**, there you need supply the following:
     ``` 
     "cordova-plugin-facebook4": {
             "APP_ID": "Add your Facebook APP ID here",
