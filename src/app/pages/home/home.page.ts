@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { Router } from '@angular/router';
 import { UtilsService } from 'src/app/services/utils.service';
+import { Vendor } from '../../models/vendor';
+import { ThrowStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-home',
@@ -10,12 +12,23 @@ import { UtilsService } from 'src/app/services/utils.service';
 })
 export class HomePage {
 
-  constructor(private authenticationService: AuthenticationService, private router: Router, private utils: UtilsService) {
+  name = "";
+  userType = "";
+  email = "";
+  photo = "";
+  vendor = "";
+
+  constructor(private authenticationService: AuthenticationService, private router: Router, private utils: UtilsService, private cdr: ChangeDetectorRef) {
+  }
+
+  ionViewWillEnter() {
+    this.resetUser()
+    this.callAdapter()
   }
 
   logout() {
     console.log('-->  logout(): Logging out from the application');
-    const promise = this.authenticationService.logout();
+    const promise = this.authenticationService.socialLogout(this.vendor);
     promise.then((response: any) => {
       if (response.status !== undefined && response.status === 'success') {
         this.router.navigate(['/login']);
@@ -33,17 +46,36 @@ export class HomePage {
 
   callAdapter() {
     this.utils.presentLoading();
-    var resourceRequest = new WLResourceRequest("/adapters/ResourceAdapter/balance",WLResourceRequest.GET, {scope: 'accessRestricted'});
+    var resourceRequest = new WLResourceRequest("/adapters/HelloSocialUser/hello",WLResourceRequest.GET, {scope: 'socialLogin'});
     resourceRequest.send().then((response) => {
-      console.log('-->  getBalance(): Success ', response);
-      this.utils.showAlert('Success!', 'Your Balance is : ' + response.responseText);   
-      
+      console.log('-->  callAdapter(): Success ', response);
+      let userInfo = response.responseJSON;
+      this.vendor = userInfo.socialLoginVendor;
+      this.userType = userInfo.socialLoginVendor + " user";
+      if(userInfo.socialLoginVendor == Vendor.Google) {
+        this.name =  userInfo.displayName;
+        this.email = userInfo.email;
+        this.photo = userInfo.picture;
+      } else {
+        this.name =  userInfo.name;
+        this.email = userInfo.email;
+        this.photo = userInfo.picture.data.url;
+      }
+      this.cdr.detectChanges();
     },(error) => {
-        console.log('-->  getBalance():  ERROR ', error.responseText);
-        this.utils.showAlert('Failure!', 'Failed to retreive balance. Reason : ' + error.responseText);     
+      this.resetUser();
+      console.log('-->  callAdapter(): Failure ', JSON.stringify(error));
+      this.utils.showAlert('Failure!', JSON.stringify(error));     
     }).done(() => {
       this.utils.dismissLoading();  
     });
+  }
+
+  resetUser() {
+    this.userType = "Guest user";
+    this.name =  "Guest";
+    this.email = "guest@guest.com";
+    this.photo = "/../../assets/avatar.jpg";
   }
     
 }

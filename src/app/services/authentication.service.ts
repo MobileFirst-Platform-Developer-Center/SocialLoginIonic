@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {Subject} from 'rxjs';
 import { Facebook } from '@ionic-native/facebook/ngx';
 import {GooglePlus} from '@ionic-native/google-plus/ngx';
+import { Vendor } from '../models/vendor';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,6 @@ export class AuthenticationService {
   private challenge = new Subject<any>();
 
   constructor(private fb: Facebook, private google: GooglePlus) { 
-    
   }
 
   publishChallenge(data: any) {
@@ -37,30 +37,19 @@ export class AuthenticationService {
     return promise;
   }
 
-  login(userId: string, password: string, isEnrolled: boolean) {
-    const promise = new Promise((resolve, reject) => {
-      WLAuthorizationManager.login(this.socialLoginSecurityCheck, {
-        username: userId,
-        password: password
-      }).then(success => {
-        console.log("-->AuthenticationService : MFPSocialLogin : login() : success : " + JSON.stringify(success));
-        resolve({ status: 'success', message: 'User credentials are valid' });
-      }, error => {
-        console.log("-->AuthenticationService : MFPSocialLogin : login() : error : " + JSON.stringify(error));
-        reject({ status: 'error', message: 'Invalid user credentials' });
-      });
-    });
-    return promise;
-  }
-
-  logout() {
+  socialLogout(vendor) {
     const promise = new Promise((resolve, reject) => {
       WLAuthorizationManager.logout(this.socialLoginSecurityCheck).then(
-        function () {
+        () => {
           WL.Logger.debug("Successfully logged-out from  " + this.socialLoginSecurityCheck);
+          if(vendor == Vendor.Google) {
+            this.googleLogout();
+          } else {
+            this.fbLogout();
+          }
           resolve({ status: 'success', message: 'Logged out successfully' });
         },
-        function (response) {
+        (response) => {
           WL.Logger.debug(this.socialLoginSecurityCheck + " logout failed: " + JSON.stringify(response));
           reject({ status: 'error', message: 'Failed to logout' });
         }
@@ -102,16 +91,15 @@ export class AuthenticationService {
 
   fbLogin() {
     const promise = new Promise((resolve, reject) => {
-      this.fb.login(['public_profile', 'user_friends', 'email'])
-      .then(res => {
-        if (res.status === 'connected') {
-          console.log("Facebook Login SUCCESS" + JSON.stringify(res))
-          resolve(res);
-        } else {
-          reject(res);
-        }
-      })
-      .catch(e => reject(e));
+      this.fb.login(['public_profile', 'email'])
+        .then(res => {
+          if (res.status === 'connected') {
+            resolve(res);
+          } else {
+            reject(res);
+          }
+        })
+        .catch(e => reject(e));
     });
     return promise;
   }
@@ -128,12 +116,18 @@ export class AuthenticationService {
 
   googleLogin() {
     const promise = new Promise((resolve, reject) => {
-      this.google.login({}).then(res => {
-          console.log("Google Login SUCCESS" + JSON.stringify(res));
-          resolve(res);
-        }, err => {
-          reject(err);
-        });
+      this.google.login({})
+      .then( res => resolve(res))
+      .catch(e => reject(e));
+    });
+    return promise;
+  }
+
+  googleLogout() {
+    const promise = new Promise((resolve, reject) => {
+      this.google.logout()
+      .then( res => resolve(res))
+      .catch(e => reject(e));
     });
     return promise;
   }
