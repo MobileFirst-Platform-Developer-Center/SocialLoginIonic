@@ -9,7 +9,66 @@ https://mobilefirstplatform.ibmcloud.com/blog/2016/04/06/social-login-with-ibm-m
 
 ![Social Login Screenshot](mobilefirst/screenshot.jpg)
 
-### Usages
+## Prerequisites
+* [Installed Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+* [Registered Facebook Android App](https://developers.facebook.com/docs/android/getting-started)
+* [Registered Google Sign-In App for Android](https://developers.google.com/identity/sign-in/android/start-integrating#get-config)
+* [Installed Android Studio](https://developer.android.com/studio/install.html)
+* [Installed MobileFirst development environment](https://mobilefirstplatform.ibmcloud.com/tutorials/en/foundation/8.0/installation-configuration/development/mobilefirst/)
+
+
+#### Configuring the Ionic app
+
+##### Facebook Authentication
+
+
+    * Register android and iOS application with the id `com.mfp.sociallogin` by following steps as mentioned [here-().
+    * Copy Facebook App ID  & App Name from [Facebook Apps Console](https://developers.facebook.com/apps/)
+
+    * ![Facebook APP ID](mobilefirst/facebook.png)
+
+    * Edit the file **package.json**, there you need supply the following:
+
+    ``` 
+    "cordova-plugin-facebook4": {
+            "APP_ID": "Add your Facebook APP ID here",
+            "APP_NAME": "Add your Facebook App Name here"
+    }
+    ```
+
+##### Google Authentication
+    
+    * Google Web Client ID from [Google API Console](https://console.developers.google.com/apis/credentials).
+
+    * ![Google Client ID](./assets/GoogleClientID.png)
+
+    * For the Google SignIn you also need to get the [google-services.json](https://developers.google.com/identity/sign-in/android/start-integrating#prerequisites) file.
+
+
+### Usage
+
+1. From a command-line window, navigate to the project's root folder and run the following commands:
+    - `ionic cordova platform add` - to add a platform.
+    - `mfpdev app register` - to register the application.
+    - `mfpdev app push` - to add the `liveupdate.mobileclient` scope in scope elements mappings section of security.
+   
+2. Add Liveupdate Features & Properties as shown below in **MobileFirst Operations Console → [your application] → Liveupdate Settings → Schema**.
+
+![Liveupdate Screenshot](mobilefirst/liveupdate-schema.png)
+
+3. Run the application in an Android Emulator, iOS Simulator, Browser or physical device with the following command.
+    - `ionic cordova run` - to run the application. 
+
+
+### Changing Live Update Settings
+
+In **MobileFirst Operations Console → [your application] → Live Update Settings → Schema tab**
+
+#### Feature Rollout
+click on the **Edit** icon of  **festivalShopping**  feature under Features section and Change the default value to **On** or *Off** to enable/disable the feature remotely.
+ 
+#### Feature Properties
+* Click the **Edit** icon of **buttonLabel** under Properties section and change the value to update the feature properties remotely.
 
 ## Version
 Ionic 5.1.0
