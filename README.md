@@ -17,7 +17,7 @@ https://mobilefirstplatform.ibmcloud.com/blog/2016/04/06/social-login-with-ibm-m
 * [Installed MobileFirst development environment](https://mobilefirstplatform.ibmcloud.com/tutorials/en/foundation/8.0/installation-configuration/development/mobilefirst/)
 
 
-#### Configuring the Ionic app
+### Configuring the Ionic app
 
 ##### Facebook Authentication
 
@@ -48,7 +48,7 @@ https://mobilefirstplatform.ibmcloud.com/blog/2016/04/06/social-login-with-ibm-m
 - For Android, There is no need to add the generated google-services.json file into your Ionic project.
 
 
-#### Configuring the Adapter
+### Configuring the Adapter
 
 - Deploy ([SocialLogin SecurityCheck](./adapters/SocialLoginSecurityCheck) and [HelloSocialUser Adapter](./adapters/HelloSocialUserAdapter)) by running following commands in the project's root directory using command line:
     * Run `cd adapters`
@@ -66,27 +66,12 @@ https://mobilefirstplatform.ibmcloud.com/blog/2016/04/06/social-login-with-ibm-m
 ### Usage
 
 1. From a command-line window, navigate to the project's root folder and run the following commands:
-    - `ionic cordova platform add` - to add a platform.
+    - `ionic cordova platform add ios` or `ionic cordova platform add android` - to add a platform.
     - `mfpdev app register` - to register the application.
-    - `mfpdev app push` - to add the `liveupdate.mobileclient` scope in scope elements mappings section of security.
-   
-2. Add Liveupdate Features & Properties as shown below in **MobileFirst Operations Console → [your application] → Liveupdate Settings → Schema**.
+    - `mfpdev app push` -  to map the `accessRestricted` scope to the `SocialLogin` security check.
+    - `ionic cordova run` - to run the application.
 
-![Liveupdate Screenshot](mobilefirst/liveupdate-schema.png)
-
-3. Run the application in an Android Emulator, iOS Simulator, Browser or physical device with the following command.
-    - `ionic cordova run` - to run the application. 
-
-
-### Changing Live Update Settings
-
-In **MobileFirst Operations Console → [your application] → Live Update Settings → Schema tab**
-
-#### Feature Rollout
-click on the **Edit** icon of  **festivalShopping**  feature under Features section and Change the default value to **On** or *Off** to enable/disable the feature remotely.
- 
-#### Feature Properties
-* Click the **Edit** icon of **buttonLabel** under Properties section and change the value to update the feature properties remotely.
+2. Login with your Facebook & Google credentials to view the profile page.
 
 ## Version
 Ionic 5.1.0
