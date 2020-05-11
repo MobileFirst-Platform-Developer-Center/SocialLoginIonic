@@ -60,7 +60,7 @@ public class HelloSocialUserResource {
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "User attributes returned") })
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	@OAuthSecurity(scope = "socialLogin")
+	@OAuthSecurity(scope = "accessRestricted")
 	public Map<String,Object> hello() {
 		AuthenticatedUser user = securityContext.getAuthenticatedUser();
 		Map<String, Object> userAttributes = new HashMap<String, Object>();

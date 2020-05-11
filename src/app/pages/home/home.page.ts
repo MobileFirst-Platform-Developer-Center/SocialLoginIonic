@@ -46,7 +46,7 @@ export class HomePage {
 
   callAdapter() {
     this.utils.presentLoading();
-    var resourceRequest = new WLResourceRequest("/adapters/HelloSocialUser/hello",WLResourceRequest.GET, {scope: 'socialLogin'});
+    var resourceRequest = new WLResourceRequest("/adapters/HelloSocialUser/hello",WLResourceRequest.GET, {scope: 'accessRestricted'});
     resourceRequest.send().then((response) => {
       console.log('-->  callAdapter(): Success ', response);
       let userInfo = response.responseJSON;
