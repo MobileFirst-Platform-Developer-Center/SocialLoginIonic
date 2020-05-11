@@ -19,9 +19,9 @@ https://mobilefirstplatform.ibmcloud.com/blog/2016/04/06/social-login-with-ibm-m
 
 ### Configuring the Ionic app
 
-##### Facebook Authentication
+#### Facebook Authentication
 
-- Register Android and iOS app with the id `com.mfp.sociallogin` by following steps as mentioned [here]().
+- Register Android and iOS app in Facebook Developer Console with the id `com.mfp.sociallogin` by following steps as mentioned [here](https://enappd-apps.gitbook.io/apps/ionic-4-full-app/pro-pack-features/social-sharing/facebook-login).
     * Copy Facebook App ID  & App Name from [Facebook Apps Console](https://developers.facebook.com/apps/)
     * ![Facebook APP ID](mobilefirst/facebook.png)
 
@@ -33,7 +33,7 @@ https://mobilefirstplatform.ibmcloud.com/blog/2016/04/06/social-login-with-ibm-m
     }
     ```
 
-##### Google Authentication
+#### Google Authentication
     
 - Register your Android and iOS app with the id `com.mfp.sociallogin` from [Google APIs Console](https://console.developers.google.com/apis/credentials).
     * ![Google Client ID](mobilefirst/google.png)
