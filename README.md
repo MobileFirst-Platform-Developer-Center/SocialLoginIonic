@@ -4,9 +4,6 @@ IBM MobileFirst Foundation
 
 A sample Ionic 5.x application demonstrating use of the Social Authentication using MobileFirst Credentials Validation Security Check.
 
-### Tutorials
-https://mobilefirstplatform.ibmcloud.com/blog/2016/04/06/social-login-with-ibm-mobilefirst-platform-foundation/
-
 ![Social Login Screenshot](mobilefirst/screenshot.jpg)
 
 ## Prerequisites
@@ -16,6 +13,8 @@ https://mobilefirstplatform.ibmcloud.com/blog/2016/04/06/social-login-with-ibm-m
 * [Installed Android Studio](https://developer.android.com/studio/install.html)
 * [Installed MobileFirst development environment](https://mobilefirstplatform.ibmcloud.com/tutorials/en/foundation/8.0/installation-configuration/development/mobilefirst/)
 
+### Tutorials
+https://mobilefirstplatform.ibmcloud.com/blog/2016/04/06/social-login-with-ibm-mobilefirst-platform-foundation/
 
 ### Configuring the Ionic app
 
