@@ -21,7 +21,7 @@ https://mobilefirstplatform.ibmcloud.com/blog/2016/04/06/social-login-with-ibm-m
 
 ##### Facebook Authentication
 
-- Register Android and iOS application with the id `com.mfp.sociallogin` by following steps as mentioned [here]().
+- Register Android and iOS app with the id `com.mfp.sociallogin` by following steps as mentioned [here]().
     * Copy Facebook App ID  & App Name from [Facebook Apps Console](https://developers.facebook.com/apps/)
     * ![Facebook APP ID](mobilefirst/facebook.png)
 
@@ -35,7 +35,7 @@ https://mobilefirstplatform.ibmcloud.com/blog/2016/04/06/social-login-with-ibm-m
 
 ##### Google Authentication
     
-- Register your Android and iOS app with the id `com.mfp.sociallogin' from [Google APIs Console](https://console.developers.google.com/apis/credentials).
+- Register your Android and iOS app with the id `com.mfp.sociallogin` from [Google APIs Console](https://console.developers.google.com/apis/credentials).
     * ![Google Client ID](mobilefirst/google.png)
 
 - For iOS, Download the plist file from Google APIs Console and Copy the Reverse Client ID.
@@ -46,6 +46,21 @@ https://mobilefirstplatform.ibmcloud.com/blog/2016/04/06/social-login-with-ibm-m
     }
     ```
 - For Android, There is no need to add the generated google-services.json file into your Ionic project.
+
+
+#### Configuring the Adapter
+
+- Deploy ([SocialLogin SecurityCheck](./adapters/SocialLoginSecurityCheck) and [HelloSocialUser Adapter](./adapters/HelloSocialUserAdapter)) by running following commands in the project's root directory using command line:
+    * Run `cd adapters`
+    * Run `mfpdev adapter build all`
+    * Run `mfpdev adapter deploy all`
+
+- From your command line run `mfpdev server console` - this command will open your server console.
+  * From the Adapters menu click on *Social Login Adapter* and navigate to *Security Checks* tab.
+  * Here you will find place to add your *google client id*.  This ID will use the adapter to validate the Google account.
+  * This ID you can retreive it from [Google APIs Console](https://console.developers.google.com/apis/credentials)
+  * If you need to use the social platform token later on, set the **keep original token** attribute to be **true**.
+  * ![Adapter Configuration](mobilefirst/SocialLoginConfiguration.png)
 
 
 ### Usage
