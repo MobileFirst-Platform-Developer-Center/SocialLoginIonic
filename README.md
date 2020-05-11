@@ -21,7 +21,7 @@ https://mobilefirstplatform.ibmcloud.com/blog/2016/04/06/social-login-with-ibm-m
 
 ##### Facebook Authentication
 
-- Register android and iOS application with the id `com.mfp.sociallogin` by following steps as mentioned [here]().
+- Register Android and iOS application with the id `com.mfp.sociallogin` by following steps as mentioned [here]().
     * Copy Facebook App ID  & App Name from [Facebook Apps Console](https://developers.facebook.com/apps/)
     * ![Facebook APP ID](mobilefirst/facebook.png)
 
@@ -35,11 +35,17 @@ https://mobilefirstplatform.ibmcloud.com/blog/2016/04/06/social-login-with-ibm-m
 
 ##### Google Authentication
     
-    * Google Web Client ID from [Google API Console](https://console.developers.google.com/apis/credentials).
+- Register your Android and iOS app with the id `com.mfp.sociallogin' from [Google APIs Console](https://console.developers.google.com/apis/credentials).
+    * ![Google Client ID](mobilefirst/google.png)
 
-    * ![Google Client ID](./assets/GoogleClientID.png)
-
-    * For the Google SignIn you also need to get the [google-services.json](https://developers.google.com/identity/sign-in/android/start-integrating#prerequisites) file.
+- For iOS, Download the plist file from Google APIs Console and Copy the Reverse Client ID.
+    * Edit the file **package.json**, there you need supply the following:
+    ``` 
+    "cordova-plugin-googleplus": {
+        "REVERSED_CLIENT_ID": "Add your iOS Reverse Client ID here"
+    }
+    ```
+- For Android, There is no need to add the generated google-services.json file into your Ionic project.
 
 
 ### Usage
